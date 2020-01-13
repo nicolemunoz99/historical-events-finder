@@ -17,7 +17,8 @@
     "webpack-cli": "^3.3.10"
   },
   "scripts": {
-    "react-dev": "webpack -d --watch"
+    "react-dev": "webpack -d --watch",
+    "start-server": "json-server --watch public/db.json"
   },
   "repository": {
     "type": "git",
