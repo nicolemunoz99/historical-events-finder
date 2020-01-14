@@ -14,6 +14,8 @@
   border-width: 0.1rem;
   border-radius: 0.5rem;
   padding: 0.8rem;
+  margin-left: auto;
+  margin-right:auto;
 }
 
 
@@ -29,6 +31,9 @@ button.event-search {
     background-color: rgb(13, 13, 58);
   }
 
+button.event-search:focus, button.event-search:active {
+  background-color: rgb(13, 13, 58)
+}
 
 .vertical-align {
   position: relative;

@@ -11,9 +11,11 @@ const Results = (props) => {
       
       <div className="row justify-content-md-center">
       <div className="h2 col-12 text-center">Results</div>
+      
         {
            props.searchResults.map(event => {
             return (
+              
               <div className="col-10 mb-4 event">
                 <div className="row">
                   <div className="col-12">{`${event.category2}, ${formatDate(event.date)}`} </div>
