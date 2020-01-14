@@ -32,7 +32,6 @@ const App = props => {
 
   useEffect (
     () => {
-      console.log('cir', criteriaString)
       if (!firstLoad) {
         loadData();
       }
@@ -75,7 +74,6 @@ const App = props => {
     if (locationInput.length) {
       searchString += `&category2_like=${locationInput}`;
     }
-    console.log(searchString)
     updateYearInput('');
     updateKeywordInput('');
     updateLocationInput('');
