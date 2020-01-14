@@ -1,7 +1,6 @@
 import React from 'react';
 
 const Results = (props) => {
-  
   const formatDate = (date) => {
     let numericYear = Number(date.split('/')[0]);
     return numericYear < 0 ? Math.abs(numericYear) + ' BCE' : numericYear + ' AD';
@@ -9,8 +8,9 @@ const Results = (props) => {
   
   return (
     <div>
-      <div className="h2">Results</div>
-      <div className="row">
+      
+      <div className="row justify-content-md-center">
+      <div className="h2 col-12 text-center">Results</div>
         {
            props.searchResults.map(event => {
             return (
@@ -19,7 +19,6 @@ const Results = (props) => {
                   <div className="col-12">{`${event.category2}, ${formatDate(event.date)}`} </div>
                 </div>
                 <div className="row">
-                  {/* <div className="col-2">Description:</div> */}
                   <div className="col-12">{event.description} </div>
                 </div>
                 

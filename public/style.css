@@ -11,6 +11,9 @@
 
 .event {
   border-style: solid;
+  border-width: 0.1rem;
+  border-radius: 0.5rem;
+  padding: 0.8rem;
 }
 
 
@@ -50,7 +53,7 @@ button.event-search {
   padding: 6px 12px;
   line-height: 1.42857143;
   text-decoration: none;
-  color: #2c689c;
+  color: rgb(13, 13, 58);
   background-color: #fff;
   border: 1px solid #ddd;
   margin-left: -1px;
@@ -83,8 +86,8 @@ button.event-search {
 .pagination > .active > span:focus {
   z-index: 3;
   color: #fff;
-  background-color: #2c689c;
-  border-color: #2c689c;
+  background-color: rgb(13, 13, 58);
+  border-color: rgb(13, 13, 58);
   cursor: default;
 }
 .pagination > .disabled > span,
