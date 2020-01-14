@@ -4,10 +4,14 @@ import SearchTerm from './SearchTerm.jsx';
 import Results from './Results.jsx';
 
 const App = props => {
-  const [dropdown, toggleDropdown] = React.useState(false);
-  const [inputPlaceholder, changePlaceholder] = React.useState('Select a search method first');
-  const [searchCriteria, setSearchCriteria] = React.useState(null);
-  const [userInput, updateUserInput] = React.useState(null);
+  // const [dropdown, toggleDropdown] = React.useState(false);
+  // const [inputPlaceholder, changePlaceholder] = React.useState('Select a search method first');
+  // const [searchCriteria, setSearchCriteria] = React.useState(null);
+  const [firstLoad, updateFirstLoad] = React.useState(true);
+  const [keywordInput, updateKeywordInput] = React.useState('');
+  const [locationInput, updateLocationInput] = React.useState('');
+  const [yearInput, updateYearInput] = React.useState('');
+  const [yearFormat, updateYearFormat] = React.useState('ad')
   // const [searchResults, updateSearchResults] = React.useState(null);
   // state for react-pagniate
   const [offset, changeOffset] = React.useState(0);
@@ -27,28 +31,40 @@ const App = props => {
     toggleDropdown(!dropdown)
   }
 
-  const handleSetSearch = (term) => {
-    changePlaceholder(searchTerms[term].placeholder)
-    toggleDropdown(false)
-    setSearchCriteria(searchTerms[term].filter)
-  }
 
   const handleInput = (e) => {
-    updateUserInput (e.target.value)
+    if (e.target.id === 'keyword')  { updateKeywordInput(e.target.value) }
+    if (e.target.id === 'year')     { updateYearInput(e.target.value) }
+    if (e.target.id === 'location') { updateLocationInput(e.target.value) }
   }
 
   const loadData = async () => {
-    let response = await fetch(`/events?_start=${offset}&_end=${offset+perPage}&${searchCriteria}_like=${userInput}`)
-    let data = await response.json();
-    await changeData(data);
+    if (!firstLoad) {
+      let response = await fetch(`/events?_start=${offset}&_end=${offset+perPage}&${searchString}`)
+      let data = await response.json();
+      await changeData(data);
   }
-
+  }
+  let searchString ='';
+  
   const submitSearch = async () => {
-    let allData = await fetch(`/events?${searchCriteria}_like=${userInput}`);
+    updateFirstLoad(false)
+    let year;
+    if (yearInput.length) {
+      year = yearFormat === 'bc' ? -yearInput : yearInput;
+      searchString += `&date=${year}`;
+    }
+    if (keywordInput.length) {
+      searchString += `&description_like=${keywordInput}`;
+    }
+    if (locationInput.length) {
+      searchString += `&category2_like${locationInput}`;
+    }
+    let allData = await fetch(`/events?${searchString}`);
     allData = await allData.json();
     await changePageCount(Math.ceil(allData.length / perPage));
     await loadData();
-  }
+  };
 
   const handlePageClick = async (data) => {
     let selected = data.selected;
@@ -72,35 +88,50 @@ const App = props => {
   }
 
   return (
-    <div className="m-3">
-      <div className="container-flex">
+    <div>
+        <div className='mt-4 title'>
+          <div className="ml-4 vertical-align">Historical Events Finder</div>
+        </div>
+      <div className="container-flex app-container">
         <div className="row no-gutters align-items-center">
-          <div className="col-3 dropdown">
 
 
 
-            <button onClick={handleDropdown} className="dropbtn">Search method &#8744;</button>
-            
-            {
-              dropdown ?
-                <div id="myDropdown" className="dropdown-content">
-                  {
-                    Object.keys(searchTerms).map(term => {
-                      return <SearchTerm key={term} handleSetSearch={handleSetSearch} searchTerm={term}/>
-                    })
-                  }
-                  
-                </div> 
-                :
-                null
-            }
+        <form>
+          <div className="form-group row">
+            <div className="col-12 h3 mb-3">Enter as many fields as you like</div>
+            <label className="col-sm-3 col-form-label">Keyword: </label>
+            <div className="col-sm-9">
+              <input onChange={handleInput} type="email" className="form-control" id="keyword"></input>
+            </div>
           </div>
-          <div className="col-4">
-          <input disabled={searchCriteria === null ? true : false} className="event-search" onChange={handleInput}  type="text" placeholder={inputPlaceholder}></input>
+          <div className="form-group mt-5 row justify-content-end">
+            <label className="col-sm-3 col-form-label">Year: </label>
+            <div className="col-sm-3">
+              <input onChange={handleInput} className="form-control" id="year" placeholder="YYYY"></input>
+            </div>
+
+            <div className="col-sm-3">
+              <input type="checkbox" value="bce"></input>
+              <label className="ml-2">BC</label>
+            </div>
+            <div className="col-sm-3">
+              <input type="checkbox" value="ad"></input>
+              <label className="ml-2">AD</label>
+            </div>
+
           </div>
-          <div className="col-2">
+          <div className="form-group row mt-5">
+            <label className="col-sm-3 col-form-label">Location: </label>
+            <div className="col-sm-9">
+              <input onChange={handleInput} type="email" className="form-control" id="location"></input>
+            </div>
+          </div>
+          <div className="col-12">
           <button onClick={submitSearch} type="button" className="event-search btn btn-dark">Submit</button>
           </div>
+        </form>
+
         </div>
       </div>
       <div>

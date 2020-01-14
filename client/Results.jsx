@@ -14,7 +14,7 @@ const Results = (props) => {
         {
            props.searchResults.map(event => {
             return (
-              <div className="col-10 mb-3">
+              <div className="col-10 mb-4 event">
                 <div className="row">
                   <div className="col-12">{`${event.category2}, ${formatDate(event.date)}`} </div>
                 </div>
